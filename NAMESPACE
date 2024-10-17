@@ -3,4 +3,5 @@
 export("%>%")
 export(analyze_data)
 export(generate_data)
+export(generate_shiny)
 importFrom(magrittr,"%>%")
