@@ -57,7 +57,7 @@ generate_data <- function(dataset_description) {
     httr::add_headers(Authorization = paste("Bearer", OPENAI_API_KEY)),
     httr::content_type_json(),
     body = jsonlite::toJSON(list(
-      model = "gpt-3.5-turbo-0125",
+      model = "gpt-4o-mini",
       messages = list(
         list(role = "system", content = "You are a helpful assistant that generates fake datasets."),
         list(role = "user", content = prompt)

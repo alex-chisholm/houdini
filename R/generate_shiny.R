@@ -13,7 +13,7 @@ generate_shiny <- function(app_description, path) {
   prompt <- paste(
     "Generate R code for a Shiny application based on the following description:",
     app_description,
-    "Provide only the code without any additional text."
+    "Provide only the code without any additional text. Do not include any code chunk markdown. Make sure to load all required packages"
   )
   
   # Send the POST request to OpenAI API
@@ -22,7 +22,7 @@ generate_shiny <- function(app_description, path) {
     httr::add_headers(Authorization = paste("Bearer", OPENAI_API_KEY)),
     httr::content_type_json(),
     body = jsonlite::toJSON(list(
-      model = "gpt-3.5-turbo-0125",
+      model = "gpt-4o-mini",
       messages = list(
         list(role = "system", content = "You are a helpful assistant that generates R code for Shiny applications."),
         list(role = "user", content = prompt)
