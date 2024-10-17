@@ -1,10 +1,10 @@
-Package: syntheticr
-Title: What the Package Does (One Line, Title Case)
+Package: houdini
+Title: Generate data and applications
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Alex", "Chisholm", , "chisholm.alexander@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Uses LLM API keys to generate datasets and applications based on descriptions provided by the user.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
