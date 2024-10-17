@@ -12,7 +12,8 @@ generate_shiny <- function(app_description, path) {
   # Construct the prompt for the LLM
   prompt <- paste(
     "Generate R code for a Shiny application based on the following description:",
-    app_description
+    app_description,
+    "Provide only the code without any additional text."
   )
   
   # Send the POST request to OpenAI API
@@ -33,8 +34,14 @@ generate_shiny <- function(app_description, path) {
   # Check for successful response
   if (httr::status_code(response) == 200) {
     content <- httr::content(response)
+    
+    # Extract the code from the response
     app_code <- content$choices[[1]]$message$content
     
+    # Remove any unwanted introductory or concluding remarks
+    app_code <- gsub("^.*?```R\\s*|\\s*```.*$", "", app_code, perl = TRUE)  # Remove code block markers
+    app_code <- gsub("\n\\s*You can run this code.*$", "", app_code)  # Remove concluding remarks
+
     # Create the directory if it doesn't exist
     if (!dir.exists(path)) {
       dir.create(path, recursive = TRUE)
