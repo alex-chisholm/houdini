@@ -2,13 +2,16 @@
 % Please edit documentation in R/generate_data.R
 \name{generate_data}
 \alias{generate_data}
-\title{Generate data function}
+\title{Generate synthetic dataset using OpenAI API}
 \usage{
 generate_data(dataset_description)
 }
+\arguments{
+\item{dataset_description}{A description of the dataset to be generated}
+}
 \value{
-A tibble dataframe
+A tibble dataframe with the generated dataset
 }
 \description{
-This function passes a dataset description to an LLM and returns a dataset in tibble dataframe form
+This function sends a dataset description to an LLM and returns a tibble dataframe.
 }
