@@ -88,3 +88,5 @@ generate_data <- function(dataset_description) {
     stop("Failed to retrieve a response from the API: HTTP status code ", httr::status_code(response))
   }
 }
+
+generate_data("planents")
