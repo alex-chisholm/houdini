@@ -40,7 +40,7 @@ preprocess_csv <- function(csv_string) {
 #' @param dataset_description A description of the dataset to be generated
 #' @return A tibble dataframe with the generated dataset
 #' @export
-generate_data <- function(dataset_description) {
+generate_data <- function(dataset_description, row_max = 30) {
   # Get OpenAI API key from environment
   OPENAI_API_KEY <- Sys.getenv("OPENAI_API_KEY")
   
@@ -48,7 +48,7 @@ generate_data <- function(dataset_description) {
   prompt <- paste(
     "Generate a fake dataset with at least two variables as a CSV string based on this description:",
     dataset_description,
-    "Include a header row. Limit to 25 rows of data. Ensure all rows have the same number of columns. Do not include any additional text or explanations."
+    "Include a header row. Limit to ", row_max, " rows of data. Ensure all rows have the same number of columns. Do not include any additional text or explanations."
   )
   
   # Send the POST request to OpenAI API
@@ -57,7 +57,7 @@ generate_data <- function(dataset_description) {
     httr::add_headers(Authorization = paste("Bearer", OPENAI_API_KEY)),
     httr::content_type_json(),
     body = jsonlite::toJSON(list(
-      model = "gpt-4o-mini",
+      model = "gpt-3.5-turbo-0125",
       messages = list(
         list(role = "system", content = "You are a helpful assistant that generates fake datasets."),
         list(role = "user", content = prompt)
