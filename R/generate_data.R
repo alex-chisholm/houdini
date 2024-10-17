@@ -1,8 +1,3 @@
-library(tidyverse)
-library(janitor)
-library(httr)
-library(jsonlite)
-
 #' Preprocess CSV string into a tibble
 #'
 #' @param csv_string A string containing CSV data
@@ -10,23 +5,23 @@ library(jsonlite)
 preprocess_csv <- function(csv_string) {
   # Regular expression to extract CSV portion
   csv_pattern <- "(?s)(.+?\\n(?:[^,\n]+(?:,[^,\n]+)*\n){2,})"
-  csv_match <- str_extract(csv_string, csv_pattern)
+  csv_match <- stringr::str_extract(csv_string, csv_pattern)
   
   if (is.na(csv_match)) {
     stop("No valid CSV data found in the response.")
   }
   
   # Split lines and remove empty lines
-  lines <- str_split(csv_match, "\n")[[1]]
+  lines <- stringr::str_split(csv_match, "\n")[[1]]
   lines <- lines[lines != ""]
   
   # Split header and determine the number of columns
-  header <- str_split(lines[1], ",")[[1]]
+  header <- stringr::str_split(lines[1], ",")[[1]]
   num_cols <- length(header)
   
   # Ensure consistent number of columns for each row
   processed_lines <- sapply(lines[-1], function(line) {  # Skip header
-    cols <- str_split(line, ",")[[1]]
+    cols <- stringr::str_split(line, ",")[[1]]
     if (length(cols) < num_cols) {
       cols <- c(cols, rep("", num_cols - length(cols)))
     } else if (length(cols) > num_cols) {
@@ -36,7 +31,7 @@ preprocess_csv <- function(csv_string) {
   })
   
   # Return a tibble
-  tibble(!!!setNames(as.list(as.data.frame(t(processed_lines))), header))
+  tibble::tibble(!!!setNames(as.list(as.data.frame(t(processed_lines))), header))
 }
 
 #' Generate synthetic dataset using OpenAI API
@@ -80,8 +75,8 @@ generate_data <- function(dataset_description) {
     
     # Process the CSV data into a tibble
     df <- preprocess_csv(csv_string) %>%
-      clean_names() %>%
-      mutate(across(everything(), ~ suppressWarnings(ifelse(!is.na(as.numeric(.)), as.numeric(.), as.character(.)))))
+      janitor::clean_names() %>%
+      dplyr::mutate(dplyr::across(dplyr::everything(), ~ suppressWarnings(ifelse(!is.na(as.numeric(.)), as.numeric(.), as.character(.)))))
     
     return(df)
   } else {
@@ -89,4 +84,5 @@ generate_data <- function(dataset_description) {
   }
 }
 
-generate_data("planents")
+# Example usage
+generate_data("planets")
